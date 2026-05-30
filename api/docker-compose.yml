@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+      #oque esta do lado direito representa minha pasta, atual, oque esta do lado esquerdo representa a pasta para onde os arquivos serao compartilhados/copiados dentro do container.
+    working_dir: /app
+    command: sleep infinity
+    ports:
+      - "8080:8080"

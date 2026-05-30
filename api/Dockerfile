@@ -11,4 +11,4 @@ COPY . .
 EXPOSE 8080
 
 # Expõe a porta 8080, que é a porta padrão para aplicações Spring Boot, permitindo que o container aceite conexões nessa porta.
-CMD ["mvn", "spring-boot:run"]
+# CMD ["mvn", "spring-boot:run"] // para producao em outro momento.
