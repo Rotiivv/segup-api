@@ -14,4 +14,9 @@ public interface RegistrationRepository extends JpaRepository<Registration, UUID
             Registration.DesiredServiceType desiredService,
             UUID id
     );
+
+    boolean existsByCpfAndDesiredService(
+            String cpf,
+            Registration.DesiredServiceType desiredService
+    );
 }
