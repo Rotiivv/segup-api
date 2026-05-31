@@ -1,10 +1,11 @@
 package backend.segup.api.service;
 
 import backend.segup.api.domain.registration.Registration;
-import backend.segup.api.domain.registration.RegistrationRequestDTO;
+import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
 import backend.segup.api.repositories.RegistrationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,7 +16,7 @@ public class RegistrationService {
         this.repository = repository;
     }
 
-    public Registration createRegistration(RegistrationRequestDTO data) {
+    public Registration createRegistration(CreateRegistrationDTO data) {
         Registration newRegistration = new Registration();
 
          newRegistration.setCpf(data.cpf());
@@ -28,6 +29,10 @@ public class RegistrationService {
          newRegistration.setProtocol(generateProtocol());
 
          return repository.save(newRegistration);
+    }
+
+    public List<Registration> findRegistrationsByCpf(String cpf) {
+        return repository.findAllByCpf(cpf);
     }
 
 
