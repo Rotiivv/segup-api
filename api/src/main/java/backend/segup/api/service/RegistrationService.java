@@ -1,5 +1,6 @@
 package backend.segup.api.service;
 
+import backend.segup.api.domain.registration.DTOs.CreateRegistrationResponseDTO;
 import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
@@ -20,7 +21,7 @@ public class RegistrationService {
         this.repository = repository;
     }
 
-    public Registration createRegistration(CreateRegistrationDTO data) {
+    public CreateRegistrationResponseDTO createRegistration(CreateRegistrationDTO data) {
         boolean alreadyExists = repository.existsByCpfAndDesiredService(
                 data.cpf(), data.desiredService()
         );
@@ -40,7 +41,15 @@ public class RegistrationService {
          newRegistration.setObservation(data.observation());
          newRegistration.setProtocol(generateProtocol());
 
-         return repository.save(newRegistration);
+         Registration savedRegistration = repository.save(newRegistration);
+
+        return new CreateRegistrationResponseDTO(
+
+                savedRegistration.getProtocol(),
+                 savedRegistration.getDesiredService(),
+                 savedRegistration.getStatus(),
+                "http://localhost:3000/registration/consult"
+        );
     }
 
     public List<Registration> findRegistrationsByCpf(String cpf) {

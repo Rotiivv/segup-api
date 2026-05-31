@@ -1,5 +1,6 @@
 package backend.segup.api.controller;
 
+import backend.segup.api.domain.registration.DTOs.CreateRegistrationResponseDTO;
 import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
@@ -22,8 +23,8 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ResponseEntity<Registration> create(@RequestBody @Valid CreateRegistrationDTO body) {
-        Registration newRegistration = this.registrationService.createRegistration(body);
+    public ResponseEntity<CreateRegistrationResponseDTO> create(@RequestBody @Valid CreateRegistrationDTO body) {
+        CreateRegistrationResponseDTO newRegistration = this.registrationService.createRegistration(body);
 
         return ResponseEntity.ok(newRegistration);
     }
