@@ -1,0 +1,52 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+
+
+
+
+este meu projeto fronted, preciso que primeiro voce limpe ele, tire as paginas default do next. A ideia e que esse front-end seja uam pagina que tenha um /registration aonde eu consigo vizualizar um formulario para me regsitrar em servicos/eventos e em baixo eu tenha dois botoes, um para submeter meu registro e outro para consultar registros que eu ja tenha feito. Depois que voce fizer a limpa, instale o tailwind-variants no projeto e crie os seguintes campos que vou lhe falar com os components do shadcn ui que ja esta instalado(se tiver alguma duvida com relacao a documentacao consulte o mcp do context7) e crie a estilizacao conforme esta o componente que estou selecionando no pencil-welcome-descktop.pen, os campos serao os seguintes cpf
+fullName
+email
+phone
+desiredService
+observation esse desired service e um select do shadcn, crie opcoes aleatorias de servicos ou eventos, alem disso converta esses nomes para portugues. 
