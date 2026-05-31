@@ -31,3 +31,9 @@ services:
 
 volumes:
   segup-db-data:
+
+
+
+
+#comandos para acessar o container
+#docker compose exec app sh

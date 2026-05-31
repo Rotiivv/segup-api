@@ -25,7 +25,7 @@ public class RegistrationService {
          newRegistration.setEmail(data.email());
          newRegistration.setPhone(data.phone());
          newRegistration.setDesiredService(data.desiredService());
-         newRegistration.setStatus(data.status());
+         newRegistration.setStatus(Registration.StatusType.CONFIRMED);
          newRegistration.setObservation(data.observation());
          newRegistration.setProtocol(generateProtocol());
 

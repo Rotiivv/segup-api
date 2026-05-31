@@ -5,7 +5,7 @@ FROM maven:3.9-eclipse-temurin-21-alpine
 WORKDIR /app
 
 # Copia tudo que esta no diretorio atual para o diretório de trabalho dentro do container, ou seja, para a pasta /app. Isso inclui o código-fonte, arquivos de configuração e outros recursos necessários para a aplicação.
-COPY . .
+#COPY . .
 
 # Expoe para quer for ler que essa aplicacao esta ativa na porta 8080
 EXPOSE 8080
