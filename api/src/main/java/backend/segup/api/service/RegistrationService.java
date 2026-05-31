@@ -18,6 +18,14 @@ public class RegistrationService {
     }
 
     public Registration createRegistration(CreateRegistrationDTO data) {
+        boolean alreadyExists = repository.existsByCpfAndDesiredService(
+                data.cpf(), data.desiredService()
+        );
+
+        if (alreadyExists) {
+            throw new IllegalArgumentException("Já existe uma inscrição para esse serviço");
+        }
+
         Registration newRegistration = new Registration();
 
          newRegistration.setCpf(data.cpf());
