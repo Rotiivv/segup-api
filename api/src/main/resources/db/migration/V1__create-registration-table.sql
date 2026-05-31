@@ -1,0 +1,26 @@
+CREATE TABLE registrations (
+    id UUID NOT NULL DEFAULT UUID() PRIMARY KEY,
+    cpf VARCHAR(11) NOT NULL ,
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(11) NOT NULL,
+
+    desired_service ENUM(
+    'PYTHONNORTE',
+    'AWSNORTE',
+    'NODENORTE',
+    'JAVANORTE',
+    'RUBINORTE'
+) NOT NULL,
+
+    status ENUM(
+    'CONFIRMADO',
+    'CANCELADO'
+) NOT NULL,
+
+    protocol VARCHAR(50) NOT NULL UNIQUE,
+    observation TEXT,
+
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
