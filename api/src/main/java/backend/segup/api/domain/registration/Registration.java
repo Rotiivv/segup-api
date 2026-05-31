@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Registration {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     private UUID id;
 
     private String cpf;
@@ -32,7 +32,7 @@ public class Registration {
     private DesiredServiceType desiredService;
 
     @Enumerated(EnumType.STRING)
-    private EventStatusType status;
+    private StatusType status;
 
     private String protocol;
 
@@ -44,7 +44,7 @@ public class Registration {
     @Column(insertable = false, updatable = false)
     private LocalDateTime updatedAt;
 
-    public enum EventStatusType {
+    public enum StatusType {
         CONFIRMADO,
         CANCELADO
     }
