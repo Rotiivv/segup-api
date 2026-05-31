@@ -41,4 +41,13 @@ public class RegistrationController {
 
         return ResponseEntity.ok(updatedRegistration);
     }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<Registration> cancelRegistration(
+            @PathVariable UUID id
+    ) {
+        return ResponseEntity.ok(
+                registrationService.cancelRegistration(id)
+        );
+    }
 }
