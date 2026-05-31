@@ -51,7 +51,7 @@ public class RegistrationController {
         );
     }
 
-    @PatchMapping("/{id}/cancel")
+    @PatchMapping("/{id}/confirm")
     public ResponseEntity<Registration> confirmRegistration(
             @PathVariable UUID id
     ) {
