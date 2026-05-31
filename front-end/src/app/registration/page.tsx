@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { RegistrationPage } from "@/components/registration-page"
+import { RegistrationPage } from "@/components/feature/registration/registration-page"
 
 export const metadata: Metadata = {
   title: "Cadastro de serviços e eventos",
