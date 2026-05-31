@@ -8,4 +8,10 @@ import java.util.UUID;
 
 public interface RegistrationRepository extends JpaRepository<Registration, UUID> {
     List<Registration> findAllByCpf(String cpf);
+
+     boolean existsByCpfAndDesiredServiceAndIdNot(
+            String cpf,
+            Registration.DesiredServiceType desiredService,
+            UUID id
+    );
 }
