@@ -28,7 +28,7 @@ public class RegistrationController {
         return ResponseEntity.ok(newRegistration);
     }
 
-    @GetMapping("/{cpf}")
+    @GetMapping("/{cpf}/all")
     public ResponseEntity<List<Registration>> listRegistrationsByCpf(@PathVariable String cpf) {
         List<Registration> registrations = this.registrationService.findRegistrationsByCpf(cpf);
 
