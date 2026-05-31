@@ -50,4 +50,13 @@ public class RegistrationController {
                 registrationService.cancelRegistration(id)
         );
     }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<Registration> confirmRegistration(
+            @PathVariable UUID id
+    ) {
+        return ResponseEntity.ok(
+                registrationService.cancelRegistration(id)
+        );
+    }
 }

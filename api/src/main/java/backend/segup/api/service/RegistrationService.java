@@ -94,6 +94,19 @@ public class RegistrationService {
         return repository.save(registration);
     }
 
+    public Registration confirmRegistration(UUID id) {
+
+        Registration registration = repository.findById(id)
+                .orElseThrow(() ->
+                        new RegistrationNotFoundException("Inscrição não encontrada"));
+
+        registration.setStatus(
+                Registration.StatusType.CONFIRMED
+        );
+
+        return repository.save(registration);
+    }
+
 
     private String generateProtocol() {
         return "PR-" + UUID.randomUUID().toString().substring(0, 36).toUpperCase();
