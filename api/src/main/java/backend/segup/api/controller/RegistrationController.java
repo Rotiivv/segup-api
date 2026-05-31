@@ -1,6 +1,7 @@
 package backend.segup.api.controller;
 
 import backend.segup.api.domain.registration.DTOs.FindAllRegistrations;
+import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
 import backend.segup.api.service.RegistrationService;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/registration")
@@ -31,5 +33,12 @@ public class RegistrationController {
         List<Registration> registrations = this.registrationService.findRegistrationsByCpf(body.cpf());
 
         return ResponseEntity.ok(registrations);
+    }
+
+    @PatchMapping("/{id}/service")
+    public ResponseEntity<Registration> updateService(@PathVariable UUID id, @RequestBody UpdateDesiredServiceDTO body) {
+        Registration updatedRegistration = this.registrationService.updateServiceRegistration(id, body);
+
+        return ResponseEntity.ok(updatedRegistration);
     }
 }
