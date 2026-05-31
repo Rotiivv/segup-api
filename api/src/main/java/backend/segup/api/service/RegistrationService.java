@@ -70,6 +70,20 @@ public class RegistrationService {
     };
 
 
+    public Registration cancelRegistration(UUID id) {
+
+        Registration registration = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Inscrição não encontrada"));
+
+        registration.setStatus(
+                Registration.StatusType.CANCELED
+        );
+
+        return repository.save(registration);
+    }
+
+
     private String generateProtocol() {
         return "PR-" + UUID.randomUUID().toString().substring(0, 36).toUpperCase();
     }
