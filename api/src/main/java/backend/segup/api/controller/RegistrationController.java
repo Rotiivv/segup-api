@@ -56,7 +56,7 @@ public class RegistrationController {
             @PathVariable UUID id
     ) {
         return ResponseEntity.ok(
-                registrationService.cancelRegistration(id)
+                registrationService.confirmRegistration(id)
         );
     }
 }
