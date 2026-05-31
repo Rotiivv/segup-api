@@ -45,8 +45,8 @@ public class Registration {
     private LocalDateTime updatedAt;
 
     public enum StatusType {
-        CONFIRMADO,
-        CANCELADO
+        CONFIRMED,
+        CANCELED
     }
 
     public enum DesiredServiceType {
