@@ -1,6 +1,5 @@
 package backend.segup.api.controller;
 
-import backend.segup.api.domain.registration.DTOs.FindAllRegistrations;
 import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
