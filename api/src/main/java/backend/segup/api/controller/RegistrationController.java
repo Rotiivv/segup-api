@@ -28,9 +28,9 @@ public class RegistrationController {
         return ResponseEntity.ok(newRegistration);
     }
 
-    @PostMapping("/all")
-    public ResponseEntity<List<Registration>> listRegistrationsByCpf(@RequestBody FindAllRegistrations body) {
-        List<Registration> registrations = this.registrationService.findRegistrationsByCpf(body.cpf());
+    @GetMapping("/{cpf}")
+    public ResponseEntity<List<Registration>> listRegistrationsByCpf(@PathVariable String cpf) {
+        List<Registration> registrations = this.registrationService.findRegistrationsByCpf(cpf);
 
         return ResponseEntity.ok(registrations);
     }
