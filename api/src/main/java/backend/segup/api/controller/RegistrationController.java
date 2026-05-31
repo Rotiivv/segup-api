@@ -4,6 +4,7 @@ import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
 import backend.segup.api.service.RegistrationService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ResponseEntity<Registration> create(@RequestBody CreateRegistrationDTO body) {
+    public ResponseEntity<Registration> create(@RequestBody @Valid CreateRegistrationDTO body) {
         Registration newRegistration = this.registrationService.createRegistration(body);
 
         return ResponseEntity.ok(newRegistration);
@@ -35,7 +36,7 @@ public class RegistrationController {
     }
 
     @PatchMapping("/{id}/service")
-    public ResponseEntity<Registration> updateService(@PathVariable UUID id, @RequestBody UpdateDesiredServiceDTO body) {
+    public ResponseEntity<Registration> updateService(@PathVariable UUID id, @RequestBody @Valid UpdateDesiredServiceDTO body) {
         Registration updatedRegistration = this.registrationService.updateServiceRegistration(id, body);
 
         return ResponseEntity.ok(updatedRegistration);
