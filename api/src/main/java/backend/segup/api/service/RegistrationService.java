@@ -1,5 +1,6 @@
 package backend.segup.api.service;
 
+import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
 import backend.segup.api.repositories.RegistrationRepository;
@@ -34,6 +35,39 @@ public class RegistrationService {
     public List<Registration> findRegistrationsByCpf(String cpf) {
         return repository.findAllByCpf(cpf);
     }
+
+
+    public Registration updateServiceRegistration(UUID id, UpdateDesiredServiceDTO data) {
+//        verifico se existe
+        Registration registration = repository.findById(id)
+            .orElseThrow(() ->
+                    new RuntimeException("Inscrição não encontrada"));
+
+//    verifico se o status nao e cancelado
+    if (registration.getStatus() == Registration.StatusType.CANCELED) {
+        throw new RuntimeException("Inscrição cancelada não pode ser alterada.");
+    }
+
+    Registration.DesiredServiceType newService = data.desiredService();
+
+    // verfico se ja nao existe outra resgistration com o mesmo servico
+    boolean alreadyExists =
+            repository.existsByCpfAndDesiredServiceAndIdNot(
+                    registration.getCpf(),
+                    newService,
+                    id
+            );
+
+    if (alreadyExists) {
+        throw new RuntimeException(
+                "Este CPF já possui inscrição neste serviço."
+        );
+    }
+
+    registration.setDesiredService(newService);
+
+    return repository.save(registration);
+    };
 
 
     private String generateProtocol() {
