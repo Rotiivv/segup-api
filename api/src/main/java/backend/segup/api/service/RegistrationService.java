@@ -4,6 +4,7 @@ import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
 import backend.segup.api.exceptions.RegistrationAlreadyExistException;
+import backend.segup.api.exceptions.RegistrationCanceledException;
 import backend.segup.api.exceptions.RegistrationNotFoundException;
 import backend.segup.api.repositories.RegistrationRepository;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class RegistrationService {
 
 //    verifico se o status nao e cancelado
     if (registration.getStatus() == Registration.StatusType.CANCELED) {
-        throw new RuntimeException("Inscrição cancelada não pode ser alterada.");
+        throw new RegistrationCanceledException("Inscrição cancelada não pode ser alterada.");
     }
 
     Registration.DesiredServiceType newService = data.desiredService();
@@ -69,7 +70,7 @@ public class RegistrationService {
             );
 
     if (alreadyExists) {
-        throw new RuntimeException(
+        throw new RegistrationAlreadyExistException(
                 "Este CPF já possui inscrição neste serviço."
         );
     }
