@@ -3,6 +3,7 @@ package backend.segup.api.service;
 import backend.segup.api.domain.registration.DTOs.UpdateDesiredServiceDTO;
 import backend.segup.api.domain.registration.Registration;
 import backend.segup.api.domain.registration.DTOs.CreateRegistrationDTO;
+import backend.segup.api.exceptions.RegistrationAlreadyExistException;
 import backend.segup.api.exceptions.RegistrationNotFoundException;
 import backend.segup.api.repositories.RegistrationRepository;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class RegistrationService {
         );
 
         if (alreadyExists) {
-            throw new RuntimeException("Este CPF já possui inscrição neste serviço.");
+            throw new RegistrationAlreadyExistException("Este CPF já possui inscrição neste serviço.");
         }
 
         Registration newRegistration = new Registration();
