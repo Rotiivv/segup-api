@@ -6,7 +6,7 @@ O fluxo principal foi pensado para rodar apenas com Docker e Docker Compose.
 ## 1. Tecnologias usadas
 
 - Backend: Java 21, Spring Boot 4, Spring Web MVC, Spring Data JPA, Spring Validation, Flyway, MariaDB, Lombok, SpringDoc OpenAPI
-- Frontend: Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/ui, Radix UI, `react-hook-form`, `zod`, `axios`, `sonner`, `tailwind-variants`
+- Frontend: Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/ui, Radix UI, `react-hook-form`, `zod`, `sonner`, `tailwind-variants`
 - Infra: Docker e Docker Compose
 
 ## 2. Como rodar o backend
@@ -15,29 +15,43 @@ Pré-requisitos:
 - Docker
 - Docker Compose
 
-Execução padrão:
+Execução com tudo em containers:
 
 ```bash
-docker compose up --build
+docker compose up -d --build
 ```
 
-O backend sobe em `http://localhost:8080` dentro do Compose.
+Execução do backend com banco em container:
+
+```bash
+cd api
+docker compose up -d
+mvn spring-boot:run
+```
+
+O backend sobe em `http://localhost:8080`.
 
 ## 3. Como rodar o frontend
-
-O frontend também sobe via Docker Compose.
 
 Pré-requisitos:
 - Docker
 - Docker Compose
 
-Execução padrão:
+Execução com tudo em containers:
 
 ```bash
-docker compose up --build
+docker compose up -d --build
 ```
 
-O frontend sobe em `http://localhost:3000` dentro do Compose.
+Execução do frontend direto na máquina:
+
+```bash
+cd front-end
+npm install
+npm run dev
+```
+
+O frontend sobe em `http://localhost:3000`.
 
 ## 4. Como configurar o banco
 
@@ -50,10 +64,22 @@ DB_NAME=segup
 DB_USER=segup
 DB_PASSWORD=segup
 DB_ROOT_PASSWORD=root
-API=http://localhost:8080
+NEXT_PUBLIC_API_URL=http://localhost:8080
 ```
 
 Com Docker Compose, o banco já é criado com esses valores.
+
+Se você rodar o backend fora do Compose, o Spring Boot também carrega `api/.env` automaticamente.
+Nesse modo, o banco sobe com `cd api && docker compose up -d`.
+
+Arquivos úteis:
+- `api/.env`: backend fora do Compose (`DB_HOST=localhost`)
+- `api/.env.example`: template do backend fora do Compose
+- `api/docker-compose.yml`: banco do backend fora do Compose
+- `front-end/.env`: frontend fora do Compose (`NEXT_PUBLIC_API_URL=http://localhost:8080`)
+- `.env` da raiz: execução total em containers
+
+Os arquivos `.env` foram mantidos no repositório para facilitar a execução inicial e evitar configuração manual repetida durante o desenvolvimento local. Como referência limpa e sem dados sensíveis, os respectivos `.env.example` continuam disponíveis em cada módulo.
 
 Migrações:
 - `V1__create-registration-table.sql`
@@ -98,7 +124,7 @@ Erros mais comuns:
 
 ## 7. Decisões técnicas e limitações
 
-- O frontend usa uma rota proxy interna em Next (`/api/registration`) para simplificar a integração com o backend.
+- O frontend chama o backend diretamente com `fetch` usando `NEXT_PUBLIC_API_URL`.
 - O schema do banco é versionado com Flyway.
 - O status da inscrição não é excluído fisicamente; ele é alterado entre `CONFIRMED` e `CANCELED`.
 - O serviço desejado é um enum fechado com valores fixos.

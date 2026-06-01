@@ -1,17 +1,16 @@
-import { tv } from "tailwind-variants"
+import { tv } from "tailwind-variants";
 
-import * as React from "react"
+import * as React from "react";
 
-import ConfirmRegistration from "./ConfirmRegistration"
-import CancelRegistration from "./CancelRegistration"
-import UpdateDesiredService from "./UpdateDesiredService"
+import ConfirmRegistration from "./ConfirmRegistration";
+import CancelRegistration from "./CancelRegistration";
+import UpdateDesiredService from "./UpdateDesiredService";
 
-type RegistrationStatus = "CONFIRMED" | "CANCELED"
+type RegistrationStatus = "CONFIRMED" | "CANCELED";
 
 const registrationCard = tv({
   slots: {
-    root:
-      "overflow-hidden rounded-2xl border border-[#dde2eb] bg-white text-[#111111] shadow-[0_18px_40px_rgba(15,23,42,0.08)]",
+    root: "overflow-hidden rounded-2xl border border-[#dde2eb] bg-white text-[#111111] shadow-[0_18px_40px_rgba(15,23,42,0.08)]",
     content: "grid gap-6 p-6",
     header: "flex items-start justify-between gap-4",
     title: "text-[18px] font-medium tracking-[-0.02em] text-[#111111]",
@@ -36,20 +35,20 @@ const registrationCard = tv({
   defaultVariants: {
     status: "CANCELED",
   },
-})
+});
 
 interface RegistrationCardProps {
-  status?: RegistrationStatus
-  title: string
-  meta?: string
-  name: string
-  protocol?: string
-  registrationId: string
-  updateError?: string
-  onCancelled?: (registrationId: string) => void
-  onUpdated?: (registrationId: string, desiredService: string) => void
-  onUpdateError?: (registrationId: string, message: string) => void
-  onConfirmed?: (registrationId: string) => void
+  status?: RegistrationStatus;
+  title: string;
+  meta?: string;
+  name: string;
+  protocol?: string;
+  registrationId: string;
+  updateError?: string;
+  onCancelled?: (registrationId: string) => void;
+  onUpdated?: (registrationId: string, desiredService: string) => void;
+  onUpdateError?: (registrationId: string, message: string) => void;
+  onConfirmed?: (registrationId: string) => void;
 }
 
 function RegistrationCard({
@@ -65,14 +64,14 @@ function RegistrationCard({
   onUpdateError,
   onConfirmed,
 }: RegistrationCardProps) {
-  const styles = registrationCard({ status })
-  const [cancelOpen, setCancelOpen] = React.useState(false)
-  const [updateOpen, setUpdateOpen] = React.useState(false)
-  const [confirmOpen, setConfirmOpen] = React.useState(false)
+  const styles = registrationCard({ status });
+  const [cancelOpen, setCancelOpen] = React.useState(false);
+  const [updateOpen, setUpdateOpen] = React.useState(false);
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
 
-  const statusLabel =
-    status === "CONFIRMED" ? "Confirmado" : "Cancelado"
-  const actionLabel = status === "CANCELED" ? "Confirmar presença" : "Cancelar presença"
+  const statusLabel = status === "CONFIRMED" ? "Confirmado" : "Cancelado";
+  const actionLabel =
+    status === "CANCELED" ? "Confirmar presença" : "Cancelar presença";
 
   return (
     <>
@@ -108,7 +107,10 @@ function RegistrationCard({
             <button
               type="button"
               className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#111111] shadow-sm ring-1 ring-[#dde2eb] transition-transform duration-150 hover:scale-[1.02]"
-              onClick={() => setUpdateOpen(true)}
+              onClick={() => {
+                onUpdateError?.(registrationId, "");
+                setUpdateOpen(true);
+              }}
             >
               Mudar tarefa desejada
             </button>
@@ -133,14 +135,16 @@ function RegistrationCard({
         onOpenChange={setUpdateOpen}
         registrationId={registrationId}
         currentService={title}
-        onUpdated={(updatedId, desiredService) => onUpdated?.(updatedId, desiredService)}
+        onUpdated={(updatedId, desiredService) =>
+          onUpdated?.(updatedId, desiredService)
+        }
         onError={(updatedId, message) => onUpdateError?.(updatedId, message)}
       />
       {updateError ? (
         <p className="mt-2 pl-4 text-sm text-[#b91c1c]">{updateError}</p>
       ) : null}
     </>
-  )
+  );
 }
 
-export default RegistrationCard
+export default RegistrationCard;

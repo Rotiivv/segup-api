@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { isAxiosError } from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
@@ -9,7 +8,7 @@ import { Check } from "lucide-react"
 import { toast } from "sonner"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { api } from "@/lib/axios"
+import { fetchJson, getApiErrorMessage } from "@/lib/api"
 import {
   formSchema,
   type RegistrationSchema,
@@ -44,14 +43,15 @@ function RegistrationForm() {
     setSubmitError(null)
 
     try {
-      const response = await api.post("/api/registration", data)
-
-      const payload = response.data as {
+      const payload = await fetchJson<{
         redirectUrl?: string
         protocol?: string
         desiredService?: string
         status?: string
-      }
+      }>("/api/registration", {
+        method: "POST",
+        body: JSON.stringify(data),
+      })
 
       toast.custom(
         () => (
@@ -76,18 +76,19 @@ function RegistrationForm() {
 
       router.push(payload.redirectUrl ?? "/registration/consult")
     } catch (error) {
-      if (isAxiosError(error)) {
-        const apiMessage = error.response?.data?.message ?? error.response?.data?.error
+      const apiError = error as { status?: number; data?: unknown }
+      const apiMessage = getApiErrorMessage(
+        apiError.data,
+        "Não foi possível criar o registro.",
+      )
 
-        setSubmitError(
-          error.response?.status === 409
-            ? "Já existe um registro no seu CPF com esse serviço. Consulte seus registros."
-            : apiMessage ?? "Não foi possível criar o registro.",
-        )
-        return
-      }
+      setSubmitError(
+        apiError.status === 409
+          ? "Já existe um registro no seu CPF com esse serviço. Consulte seus registros."
+          : apiMessage,
+      )
 
-      setSubmitError("Não foi possível criar o registro.")
+      return
     }
   })
 

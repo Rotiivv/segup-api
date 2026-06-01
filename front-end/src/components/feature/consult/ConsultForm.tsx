@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import * as React from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
 
-import { Card, CardContent } from "@/components/ui/card";
-import { api } from "@/lib/axios";
-import { consultSchema, type ConsultSchema } from "@/schema/consult.schema";
-import RegistrationCard from "../registration/RegistrationCard";
+import { Card, CardContent } from "@/components/ui/card"
+import { fetchJson, getApiErrorMessage } from "@/lib/api"
+import { consultSchema, type ConsultSchema } from "@/schema/consult.schema"
+import RegistrationCard from "../registration/RegistrationCard"
 
-import ConsultField from "./ConsultField";
-import FormHeader from "./FormHeader";
-import FormActions from "../registration/FormActions";
+import ConsultField from "./ConsultField"
+import FormHeader from "./FormHeader"
+import FormActions from "../registration/FormActions"
 
 interface ConsultRegistration {
   id: string;
@@ -24,13 +24,14 @@ interface ConsultRegistration {
   protocol: string;
   status: "CONFIRMED" | "CANCELED";
   createdAt?: string;
-  updateError?: string;
+  updateError?: string
 }
 
 function ConsultForm() {
   const [registrations, setRegistrations] = React.useState<
     ConsultRegistration[]
-  >([]);
+  >([])
+  const [submitError, setSubmitError] = React.useState<string | null>(null)
 
   const {
     control,
@@ -44,13 +45,23 @@ function ConsultForm() {
   });
 
   const handleSubmit = hfHandleSubmit(async (data) => {
-    const response = await api.get<ConsultRegistration[]>(
-      `/api/registration/${data.cpf}/all`,
-    );
+    setSubmitError(null)
 
-    console.log(response.data);
-    setRegistrations(response.data);
-  });
+    try {
+      const payload = await fetchJson<ConsultRegistration[]>(
+        `/api/registration/${encodeURIComponent(data.cpf)}/all`,
+      )
+
+      setRegistrations(payload)
+    } catch (error) {
+      const apiError = error as { status?: number; data?: unknown }
+
+      setRegistrations([])
+      setSubmitError(
+        getApiErrorMessage(apiError.data, "Não foi possível consultar os registros."),
+      )
+    }
+  })
 
   return (
     <div className="flex justify-center">
@@ -67,6 +78,9 @@ function ConsultForm() {
                 consultHref="/registration"
               />
             </form>
+            {submitError ? (
+              <p className="mt-4 text-sm text-[#b91c1c]">{submitError}</p>
+            ) : null}
           </CardContent>
         </Card>
 
@@ -131,4 +145,4 @@ function ConsultForm() {
   );
 }
 
-export default ConsultForm;
+export default ConsultForm

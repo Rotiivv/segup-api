@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { fetchJson } from "@/lib/api";
 
 interface CancelRegistrationProps {
   open: boolean;
@@ -31,22 +32,16 @@ function CancelRegistration({
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/registration/${registrationId}/cancel`,
+      const data = await fetchJson<unknown>(
+        `/api/registration/${registrationId}/cancel`,
         {
           method: "PATCH",
         },
       );
 
-      const data = await response.json();
-      if (!response.ok) {
-        console.log(data);
-        onOpenChange(false);
-        return;
-      }
-
-      console.log(data);
       onCancelled?.(data);
+      onOpenChange(false);
+    } catch {
       onOpenChange(false);
     } finally {
       setLoading(false);

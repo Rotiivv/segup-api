@@ -15,18 +15,18 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME:-segup}
+      DB_USER: ${DB_USER:-segup}
+      DB_PASSWORD: ${DB_PASSWORD:-segup}
 
   db:
     image: mariadb:11.4
     container_name: segup-db
     environment:
-      MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME:-segup}
+      MARIADB_USER: ${DB_USER:-segup}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-segup}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
     ports:
       - "3306:3306"
     volumes:
@@ -47,8 +47,7 @@ services:
     depends_on:
       - app
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8080
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
 
 volumes:
   segup-db-data:
-

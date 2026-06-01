@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { fetchJson, getApiErrorMessage } from "@/lib/api";
 
 import { desiredServices, type ServiceValue } from "./constants";
 
@@ -48,31 +49,23 @@ function UpdateDesiredService({
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/registration/${registrationId}/service`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ desiredService: value }),
-        },
-      );
+      await fetchJson<unknown>(`/api/registration/${registrationId}/service`, {
+        method: "PATCH",
+        body: JSON.stringify({ desiredService: value }),
+      });
 
-      const data = await response.json();
-      if (!response.ok) {
+      onUpdated?.(registrationId, value);
+      onOpenChange(false);
+    } catch (error) {
+      const apiError = error as { status?: number; data?: unknown };
+
+      if (apiError.status === 409) {
         onError?.(
           registrationId,
-          response.status === 409
-            ? "Já existe um registro no seu CPF com esse serviço selecionado."
-            : (data?.message ?? data?.error ?? "Erro ao atualizar o serviço."),
+          "Já existe um registro no seu CPF com esse serviço selecionado.",
         );
-        onOpenChange(false);
-        return;
       }
 
-      console.log(data);
-      onUpdated?.(registrationId, value);
       onOpenChange(false);
     } finally {
       setLoading(false);

@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mariadb:11.4
+    container_name: segup-db
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-segup}
+      MARIADB_USER: ${DB_USER:-segup}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-segup}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    ports:
+      - "3306:3306"
+    volumes:
+      - segup-db-data:/var/lib/mysql
+
+volumes:
+  segup-db-data:

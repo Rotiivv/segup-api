@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { fetchJson } from "@/lib/api"
 
 interface ConfirmRegistrationProps {
   open: boolean
@@ -31,19 +32,13 @@ function ConfirmRegistration({
     setLoading(true)
 
     try {
-      const response = await fetch(`/api/registration/${registrationId}/confirm`, {
+      const data = await fetchJson<unknown>(`/api/registration/${registrationId}/confirm`, {
         method: "PATCH",
       })
 
-      const data = await response.json()
-      if (!response.ok) {
-        console.log(data)
-        onOpenChange(false)
-        return
-      }
-
-      console.log(data)
       onConfirmed?.(data)
+      onOpenChange(false)
+    } catch {
       onOpenChange(false)
     } finally {
       setLoading(false)

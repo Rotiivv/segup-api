@@ -5,7 +5,8 @@ export const consultSchema = z.object({
     .string()
     .trim()
     .min(1, "Preencha o CPF.")
-    .regex(/^(\d{3}\.\d{3}\.\d{3}-\d{2}|\d{11})$/, "Preencha um CPF válido."),
+    .transform((value) => value.replace(/\D/g, ""))
+    .pipe(z.string().regex(/^\d{11}$/, "Preencha um CPF válido.")),
 })
 
 export type ConsultSchema = z.infer<typeof consultSchema>

@@ -9,6 +9,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+function normalizeCpf(value: string) {
+  return value.replace(/\D/g, "").slice(0, 11)
+}
+
 interface InputFieldProps<T extends FieldValues>
   extends ComponentProps<typeof Input> {
   id: string
@@ -41,7 +45,17 @@ const InputField = <T extends FieldValues>({
               {...field}
               {...props}
               id={id}
+              inputMode={name === "cpf" ? "numeric" : props.inputMode}
+              maxLength={name === "cpf" ? 11 : props.maxLength}
               aria-invalid={fieldState.invalid}
+              onChange={(event) => {
+                if (name === "cpf") {
+                  field.onChange(normalizeCpf(event.target.value))
+                  return
+                }
+
+                field.onChange(event)
+              }}
               className={[
                 "h-10 rounded-xl border-[#dde2eb] bg-white text-[#111111] placeholder:text-[#8a93a3] focus-visible:ring-[#b85a00]/15",
                 icon ? "pl-10" : "",

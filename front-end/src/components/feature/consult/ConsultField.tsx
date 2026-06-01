@@ -16,7 +16,7 @@ function ConsultField({ control }: ConsultFieldProps) {
       name="cpf"
       id="cpf"
       label="CPF"
-      placeholder="000.000.000-00"
+      placeholder="00000000000"
       icon={<IdCard className="h-4 w-4" />}
     />
   )
