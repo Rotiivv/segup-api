@@ -1,0 +1,54 @@
+services:
+  app:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: segup-api
+    volumes:
+      - ./api:/app
+    working_dir: /app
+    command: mvn spring-boot:run
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  db:
+    image: mariadb:11.4
+    container_name: segup-db
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - segup-db-data:/var/lib/mysql
+
+  front-end:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    container_name: segup-front-end
+    volumes:
+      - ./front-end:/app
+      - /app/node_modules
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- -H 0.0.0.0"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - app
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+
+volumes:
+  segup-db-data:
+
