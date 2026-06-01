@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Loader2 } from "lucide-react"
+import * as React from "react";
+import { Loader2 } from "lucide-react";
 
 import {
   Dialog,
@@ -9,14 +9,14 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface CancelRegistrationProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  registrationId: string
-  onCancelled?: (registration: unknown) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  registrationId: string;
+  onCancelled?: (registration: unknown) => void;
 }
 
 function CancelRegistration({
@@ -25,30 +25,33 @@ function CancelRegistration({
   registrationId,
   onCancelled,
 }: CancelRegistrationProps) {
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
 
   const handleCancel = React.useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const response = await fetch(`/api/registration/${registrationId}/cancel`, {
-        method: "PATCH",
-      })
+      const response = await fetch(
+        `http://localhost:8080/api/registration/${registrationId}/cancel`,
+        {
+          method: "PATCH",
+        },
+      );
 
-      const data = await response.json()
+      const data = await response.json();
       if (!response.ok) {
-        console.log(data)
-        onOpenChange(false)
-        return
+        console.log(data);
+        onOpenChange(false);
+        return;
       }
 
-      console.log(data)
-      onCancelled?.(data)
-      onOpenChange(false)
+      console.log(data);
+      onCancelled?.(data);
+      onOpenChange(false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [onCancelled, onOpenChange, registrationId])
+  }, [onCancelled, onOpenChange, registrationId]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -56,7 +59,8 @@ function CancelRegistration({
         <DialogHeader>
           <DialogTitle>Cancelar presença</DialogTitle>
           <DialogDescription>
-            Você pode cancelar sua presença neste registro. Essa ação pode ser revisada depois, se o backend permitir.
+            Você pode cancelar sua presença neste registro. Essa ação pode ser
+            revisada depois, se o backend permitir.
           </DialogDescription>
         </DialogHeader>
 
@@ -81,7 +85,7 @@ function CancelRegistration({
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
-export default CancelRegistration
+export default CancelRegistration;

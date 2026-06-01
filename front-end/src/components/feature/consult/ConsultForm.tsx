@@ -44,11 +44,9 @@ function ConsultForm() {
   });
 
   const handleSubmit = hfHandleSubmit(async (data) => {
-    const response = await api.get<ConsultRegistration[]>("/api/registration", {
-      params: {
-        cpf: data.cpf,
-      },
-    });
+    const response = await api.get<ConsultRegistration[]>(
+      `/api/registration/${data.cpf}/all`,
+    );
 
     console.log(response.data);
     setRegistrations(response.data);
